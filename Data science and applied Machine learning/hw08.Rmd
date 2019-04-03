@@ -1,0 +1,65 @@
+---
+title: "HW8"
+author: "Guangya Wan"
+date: "March 29, 2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r,echo=FALSE}
+library(reticulate)
+python_path = "/home/guangya/anaconda3/bin/python"
+use_python(python_path)
+```
+
+```{python,echo = FALSE}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import CountVectorizer 
+from sklearn.neighbors import NearestNeighbors
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_curve, precision_recall_curve, auc, make_scorer, recall_score, accuracy_score, precision_score, confusion_matrix
+yelp = pd.read_csv('yelp_2k.csv')
+data = yelp[['text','stars']]
+def lower_case(x):
+    return x.lower()
+data['text'] = data['text'].apply(lower_case)
+
+vector = CountVectorizer()
+s = []
+
+```
+
+\newpage
+```{python}
+x = np.array([2,3])
+print(x)
+```
+
+\newpage
+```{python}
+for i in data['text']:
+    s.append(i)
+rank_word = sorted(np.sum(np.array(vector.fit_transform(s).toarray()),axis = 0))[::-1]
+plt.scatter(x = range(len(rank_word)),y = rank_word,label = 'counts')
+plt.xlabel('Wordrank')
+plt.ylabel('Wordcount')
+plt.title('word frequency')
+plt.legend()
+count_vec = np.sum(np.array(vector.fit_transform(s).toarray()),axis = 0)
+# I decide to make stop word as the top5 word
+remove_index = []
+for i in rank_word[:10]:
+    remove_index.append(np.argwhere(count_vec == i)[0][0])
+stop_words = []
+for k,v in vector.vocabulary_.items():
+    if(v in remove_index):
+        print(k) # stop words
+        stop_words.append(k)
+vector = CountVectorizer(stop_words=stop_words, max_df=0.95,min_df= 5)
+rank_word = sorted(np.sum(np.array(vector.fit_transform(s).toarray()),axis = 0))[::-1]
+```
+
+
