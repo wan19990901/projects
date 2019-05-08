@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+        <head>
+
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <meta name="description" content="">
+                <meta name="author" content="">
+            
+                <title>Freelancer -result Start Bootstrap Theme</title>
+            
+                <!-- Bootstrap core CSS -->
+                <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+            
+                <!-- Custom fonts for this template -->
+                <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+                <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+                <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+            
+                <!-- Plugin CSS -->
+                <link href="/static/vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
+            
+                <!-- Custom styles for this template -->
+                <link href="/static/css/freelancer.min.css" rel="stylesheet">
+            
+            </head>
+<body>
+
+
+
+    <section class="bg-primary text-white mb-0" id="recommend">
+            <div class="container ">
+                <h2 class="text-center text-uppercase text-white">Movie summary</h2>
+                <hr class="star-light"> </hr>
+                <h3 class="text-center font-weight-light mb-0"></h3>
+                
+                
+                <div class = "row">
+                        
+                        <div class="col-md-6 col-lg-4">
+                                <h3 class="text-center font-weight-light mb-0"> General Facts</h3>
+                            <body>
+                            <br> Number Of Movie: {{ info[0] }}</br> 
+                            <br>Most Productive Actor:{{ info[1] }}</br> 
+                            <br>Most Productive Director: {{ info[2] }}</br> 
+                            <br> Most Productive Studio: {{ info[3] }}</br>    
+                            </body>
+                        </div>
+                
+                    
+                <div class="col-md-6 col-lg-4">
+                    
+                    <h3 class="text-center font-weight-light mb-0"> Best movie in this category</h3>
+                    <body> Title : {{ info[4][1]['Title'].iloc[0] }}
+                            <br> 
+                        <body>Rating : {{ info[4][0] }} </body>
+                       
+                        
+                            <br> Main Cast 1 : {{ info[4][1]['Cast 1'].iloc[0] }}
+                            <br> Main Cast 2 : {{ info[4][1]['Cast 2'].iloc[0] }}
+                            <br> Main Cast 3 : {{ info[4][1]['Cast 3'].iloc[0] }}
+                            <br> Main Director 1 : {{ info[4][1]['Director 1'].iloc[0] }}
+                            <br> Main Director 2 : {{ info[4][1]['Director 2'].iloc[0] }}
+                            <br> Main Write : {{ info[4][1]['Writer 1'].iloc[0] }}
+                            <br> Genre : {{ info[4][1]['Genre'].iloc[0] }}
+                            <br> url : <a href={{info[4][1]['url'].iloc[0]}} class="redtext" >links to Rotten Tomatoes for more information</a> 
+                        </body>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4">
+                    
+                        <h3 class="text-center font-weight-light mb-0"> Worst movie in this category</h3>
+                        <body> Title :{{ info[5][1]['Title'].iloc[0] }}
+                                <br> 
+                        <body>Rating : {{ info[5][0] }} </body>
+                            <br> Main Cast 1 : {{ info[5][1]['Cast 1'].iloc[0] }}
+                            <br> Main Cast 2 : {{ info[5][1]['Cast 2'].iloc[0] }}
+                            <br> Main Cast 3 : {{ info[5][1]['Cast 3'].iloc[0] }}
+                            <br> Main Director 1 : {{ info[5][1]['Director 1'].iloc[0] }}
+                            <br> Main Director 2 : {{ info[5][1]['Director 2'].iloc[0] }}
+                            <br> Main Write : {{ info[5][1]['Writer 1'].iloc[0] }}
+                            <br> Genre : {{ info[5][1]['Genre'].iloc[0] }}
+                            <style>
+                                    .redtext {
+                                            color: blueviolet;
+                                    }
+                                    </style>
+                            <br > url : <a href={{info[5][1]['url'].iloc[0]}} class="redtext" >links to Rotten Tomatoes for more information</a> 
+                        </body>
+                    </div>
+                </div>
+            
+
+    </div>
+    </div>
+</section>
+	
+
+<section class="mb-0" id="analysis">
+        <div class="container">
+                <h2 class="text-center text-uppercase text-secondary mb-0"> Visulization for movies </h2>
+                <hr class="star-dark mb-5"> </hr>
+                
+    
+    
+    {{ mydiv }}
+
+    
+    
+    </div>
+    
+</section>
+
+</html>
