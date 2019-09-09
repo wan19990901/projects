@@ -1,0 +1,91 @@
+---
+title: 'CS 498: Homework 06'
+author: "Spring 2019, Guangya Wan, Sizhi Tan"
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    theme: readable
+    toc: yes
+---
+
+```{r}
+library('MASS')
+data_set = Boston
+model = lm(medv ~ .,data = data_set) # regression here
+summary(model)
+
+```
+### code for building regression model and the summary of model
+\newpage
+```{r,echo=FALSE}
+cutoff <- 0.05
+plot(model, which=5, cook.levels=cutoff,id.n = 20)
+true_price = data_set[,'medv']
+```
+Based on this plot, I identified that there are 10 points(365,381,369,373,372,370,366,371,413,368) here that are outliers.Here are my reasonings: Point 381 have an very large leverage compared to the rest of points. Points 365, 369, 373,370, 366 are outside of my curve cut-off cook's distance value curve which is 0.05. Points 370,413,371,368 are outside but very close to my cook's distance cut-off, and they have a large standardlized residuals(great than 3), and their leverage are also larger than the leverage of other majority of data, which is about 0.025.
+
+\newpage
+```{r,echo=FALSE}
+dropped_index = c(365,369,372,373,381,413,371,370,366,368)
+dropped_data = data_set[-dropped_index,]
+dropped_model = lm(medv ~ .,data = dropped_data)
+plot(dropped_model, which=5, cook.levels=cutoff,id.n = 20)
+```
+diagnostic plot after dropping selected outliers
+
+\newpage
+```{r,eval=FALSE}
+dropped_index = c(365,369,372,373,381,413,371,370,366,368)
+dropped_data = data_set[-dropped_index,]
+dropped_model = lm(medv ~ .,data = dropped_data)
+plot(dropped_model, which=5, cook.levels=cutoff,id.n = 20)
+```
+codes for generating the plot
+\newpage
+```{r,echo=FALSE}
+boxcox(medv ~ ., data = dropped_data,lambda = seq(0.2, 0.4, length = 10))
+```
+According to the plot, best value of lambda is 0.315 as it maximizes the log likelihood
+\newpage
+```{r,echo= FALSE}
+par(mfrow=c(1,2))
+dropped_data[,'medv'] = (dropped_data[,'medv'] ** 0.315 - 1) / 0.315
+dropped_model = lm(medv ~ .,data = dropped_data)
+x = as.matrix(data_set[,1:13])
+y = predict(dropped_model,data_set[,1:13])
+M = x %*% (solve(t(x) %*% x)) %*% t(x)
+stand_res = rep(0,nrow(M))
+cons =  (t(resid(dropped_model)) %*%  resid(dropped_model)) / nrow(M)
+for (i in 1:nrow(M)){
+    stand_res[i] = resid(dropped_model)[i] / (cons * 1-M[i,i])**0.5
+}
+hist(stand_res,xlab = "standlized residuals")
+y = (y * 0.315 + 1)**(1/0.315)
+true_price = data_set[,'medv']
+plot(y,true_price,xlab="predicted",ylab="actual")
+abline(a=0,b=1)
+```
+Left is histogram of residuals after transformation and right is actual vs predicetd plot plus an x=y line 
+\newpage
+
+```{r,eval = FALSE}
+boxcox(medv ~ ., data = dropped_data,lambda = seq(0.2, 0.4, length = 10)) # problem 3
+par(mfrow=c(1,2))# the rest are for problem 4
+dropped_data[,'medv'] = (dropped_data[,'medv'] ** 0.315 - 1) / 0.315
+dropped_model = lm(medv ~ .,data = dropped_data)
+x = as.matrix(data_set[,1:13])
+y = predict(dropped_model,data_set[,1:13])
+M = x %*% (solve(t(x) %*% x)) %*% t(x)
+stand_res = rep(0,nrow(M))
+cons =  (t(resid(dropped_model)) %*%  resid(dropped_model)) / nrow(M)
+for (i in 1:nrow(M)){
+    stand_res[i] = resid(dropped_model)[i] / (cons * 1-M[i,i])**0.5
+}
+hist(stand_res,xlab = "standlized residuals")
+y = (y * 0.315 + 1)**(1/0.315)
+true_price = data_set[,'medv']
+plot(y,true_price,xlab="predicted",ylab="actual")
+abline(a=0,b=1)
+```
+Code for subproblem 3 and 4
